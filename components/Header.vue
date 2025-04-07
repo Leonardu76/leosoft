@@ -56,7 +56,7 @@ import Menubar from 'primevue/menubar';
 }
 
 :where(.css-dev-only-do-not-override-1p3hq3p).ant-anchor-wrapper .ant-anchor .ant-anchor-link-title{
-    color: azure;
+    color: azure !important;
     margin-left:50px;
 }
 .div-logo img{

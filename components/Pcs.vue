@@ -1,5 +1,5 @@
 <template>
-  <div class="div-pcs" id="pcs" data-aos="zoom-out-up">
+  <div class="div-pcs" id="pcs" >
     <div class="div-pcs-title">
       <h2>PCs Montados</h2>
       <p class="pcs-description">Pcs prontos para o que você precisar.</p>

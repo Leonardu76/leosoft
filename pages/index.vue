@@ -2,11 +2,11 @@
     <div >
      <Header/>
     </div>
-    <div data-aos="fade-right">
+    <div data-aos="fade-down">
       <Banner/>
     </div>
 
-    <div>
+    <div data-aos="fade-right">
       <Pcs/>
     </div>
 
@@ -16,7 +16,7 @@
       <Notebooks/>
     </div>
 
-    <div  data-aos="fade-down"
+    <div  data-aos="fade-right"
      data-aos-easing="linear"
      data-aos-duration="1500">
       <Perifericos/>
