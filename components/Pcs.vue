@@ -41,10 +41,9 @@
             <p>{{ pc.price }}</p>
             <p>
               <strong>{{ pc.name }}</strong>
-              <hr />
               {{ pc.description }}
-
             </p>
+            <hr />
             
             <a class="button" target="_blank" :href="getNumerApiWhastsapp(pc.name)" title="Comprar"><WhatsAppOutlined /> Comprar</a>
           </div>
@@ -55,10 +54,47 @@
 </template>
 
 <script lang="ts" setup>
-import { h, ref, computed } from 'vue'
-import { WhatsAppOutlined, RightCircleOutlined } from '@ant-design/icons-vue';
+import { ref, computed, onMounted, onBeforeUnmount, watchEffect } from 'vue'
+import { WhatsAppOutlined, RightCircleOutlined } from '@ant-design/icons-vue'
 
-const pcs = [  {
+// Dados dos PCs
+const pcs = ref([
+  {
+    mainImage: '/assets/imgs/pc-gamer-2.png',
+    previewImages: [
+      '/assets/imgs/game1.webp',
+      '/assets/imgs/game2.webp',
+      '/assets/imgs/game3.jpg',
+    ],
+    price: 'R$ 0.000,00',
+    name: 'PC Gamer ITX Arena Deluxe',
+    description: 'NVídia GeForce RTX 3060, 16GB RAM, SSD 500GB, Gabinete RGB, Mouse e telcado',
+  },
+  {
+    mainImage: '/assets/imgs/pc-gamer.png',
+    previewImages: [
+      '/assets/imgs/game1.webp',
+      '/assets/imgs/game2.webp',
+      '/assets/imgs/game3.jpg',
+      '/assets/imgs/banner2.jpg',
+    ],
+    price: 'R$ 0.000,00',
+    name: 'PC Gamer ITX Arena Basic',
+    description: 'Ryzen 5 5500, NVídia GeForce RTX 4060, 12GB RAM, SSD 250GB, Gabinete RGB',
+  },
+  {
+    mainImage: '/assets/imgs/pc-gamer4.png',
+    previewImages: [
+      '/assets/imgs/game1.webp',
+      '/assets/imgs/game2.webp',
+      '/assets/imgs/game3.jpg',
+      '/assets/imgs/banner2.jpg',
+    ],
+    price: 'R$ 0.000,00',
+    name: 'PC Gamer ITX Arena Supreme',
+    description: 'Ryzen 7 8700g, NVídia GeForce RTX 4060, 64GB RAM, SSD 1TB, Gabinete RGB',
+  },
+  {
     mainImage: '/assets/imgs/pc-gamer-2.png',
     previewImages: [
       '/assets/imgs/game1.webp',
@@ -105,6 +141,17 @@ const pcs = [  {
     description: 'NVídia GeForce RTX 3060, 16GB RAM, SSD 500GB, Gabinete RGB, Mouse e telcado',
   },
   {
+    mainImage: '/assets/imgs/pc-gamer-2.png',
+    previewImages: [
+      '/assets/imgs/game1.webp',
+      '/assets/imgs/game2.webp',
+      '/assets/imgs/game3.jpg',
+    ],
+    price: 'R$ 0.000,00',
+    name: 'PC Gamer ITX Arena Deluxe',
+    description: 'NVídia GeForce RTX 3060, 16GB RAM, SSD 500GB, Gabinete RGB, Mouse e telcado',
+  },
+  {
     mainImage: '/assets/imgs/pc-gamer.png',
     previewImages: [
       '/assets/imgs/game1.webp',
@@ -114,7 +161,7 @@ const pcs = [  {
     ],
     price: 'R$ 0.000,00',
     name: 'PC Gamer ITX Arena Basic',
-    description: 'Ryzen 5 5500, NVídia GeForce RTX 4060, 12GB RAM, SSD 250GB, Gabinete RGB',
+    description: 'Ryzen 5 5500, NVídia GeForce RTX 4060, 12GB RAM, SSD 250GB, Gabinete RGB'
   },
   {
     mainImage: '/assets/imgs/pc-gamer4.png',
@@ -127,65 +174,48 @@ const pcs = [  {
     price: 'R$ 0.000,00',
     name: 'PC Gamer ITX Arena Supreme',
     description: 'Ryzen 7 8700g, NVídia GeForce RTX 4060, 64GB RAM, SSD 1TB, Gabinete RGB',
-  },
-  {
-    mainImage: '/assets/imgs/pc-gamer-2.png',
-    previewImages: [
-      '/assets/imgs/game1.webp',
-      '/assets/imgs/game2.webp',
-      '/assets/imgs/game3.jpg',
-    ],
-    price: 'R$ 0.000,00',
-    name: 'PC Gamer ITX Arena Deluxe',
-    description: 'NVídia GeForce RTX 3060, 16GB RAM, SSD 500GB, Gabinete RGB, Mouse e telcado',
-  },{
-    mainImage: '/assets/imgs/pc-gamer-2.png',
-    previewImages: [
-      '/assets/imgs/game1.webp',
-      '/assets/imgs/game2.webp',
-      '/assets/imgs/game3.jpg',
-    ],
-    price: 'R$ 0.000,00',
-    name: 'PC Gamer ITX Arena Deluxe',
-    description: 'NVídia GeForce RTX 3060, 16GB RAM, SSD 500GB, Gabinete RGB, Mouse e telcado',
-  },
-  {
-    mainImage: '/assets/imgs/pc-gamer.png',
-    previewImages: [
-      '/assets/imgs/game1.webp',
-      '/assets/imgs/game2.webp',
-      '/assets/imgs/game3.jpg',
-      '/assets/imgs/banner2.jpg',
-    ],
-    price: 'R$ 0.000,00',
-    name: 'PC Gamer ITX Arena Basic',
-    description: 'Ryzen 5 5500, NVídia GeForce RTX 4060, 12GB RAM, SSD 250GB, Gabinete RGB',
+  }]
+)
+const chunkSize = ref(7)
 
-  },
-  {
-    mainImage: '/assets/imgs/pc-gamer4.png',
-    previewImages: [
-      '/assets/imgs/game1.webp',
-      '/assets/imgs/game2.webp',
-      '/assets/imgs/game3.jpg',
-      '/assets/imgs/banner2.jpg',
-    ],
-    price: 'R$ 0.000,00',
-    name: 'PC Gamer ITX Arena Supreme',
-    description: 'Ryzen 7 8700g, NVídia GeForce RTX 4060, 64GB RAM, SSD 1TB, Gabinete RGB',
-  },]
+function updateChunkSize() {
+  const width = window.innerWidth
+  if (width < 600) {
+    chunkSize.value = 1
+  } else if (width < 1024) {
+    chunkSize.value = 3
+  } else {
+    chunkSize.value = 6
+  }
+}
+
+onMounted(() => {
+  updateChunkSize()
+  window.addEventListener('resize', updateChunkSize)
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('resize', updateChunkSize)
+})
 
 const chunkArray = <T>(arr: T[], size: number): T[][] =>
   Array.from({ length: Math.ceil(arr.length / size) }, (_, i) =>
     arr.slice(i * size, i * size + size)
   )
 
-const groupedPcs = computed(() => chunkArray(pcs, 7))
-const visibles = ref(Array(pcs.length).fill(false))
+const groupedPcs = computed(() => chunkArray(pcs.value, chunkSize.value))
+
+const visibles = ref<boolean[]>([])
+
+watchEffect(() => {
+  visibles.value = Array(groupedPcs.value.length).fill(false)
+})
+
 function getNumerApiWhastsapp(text: string) {
   return `https://api.whatsapp.com/send?phone=5531985808502&text=Olá!%20Gostaria%20de%20saber%20mais%20sobre%20o%20produto:%20${text}`
 }
 </script>
+
 
 <style scoped>
 .div-pcs {

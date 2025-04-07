@@ -4,7 +4,7 @@
         <img src="/assets/imgs/logo.png" alt="">
     </div>
   
-      <a-anchor 
+      <a-anchor class="links" 
         direction="horizontal"
         :items="[
           {
@@ -42,7 +42,6 @@
 
 <script>
 
-import Menubar from 'primevue/menubar';
 
 </script>
 
@@ -55,8 +54,8 @@ import Menubar from 'primevue/menubar';
     gap:150px;
 }
 
-:where(.css-dev-only-do-not-override-1p3hq3p).ant-anchor-wrapper .ant-anchor .ant-anchor-link-title{
-    color: azure !important;
+.links a{
+    color: white !important;
     margin-left:50px;
 }
 .div-logo img{
