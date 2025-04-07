@@ -1,5 +1,5 @@
 <template>
-  <div class="div-pcs" id="notebooks">
+<div class="div-pcs" id="notebooks">
     <div class="div-pcs-title">
       <h2>Notebooks</h2>
     </div>
